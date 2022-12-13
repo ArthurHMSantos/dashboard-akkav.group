@@ -1,6 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+import altair as alt
 import numpy as np
 import streamlit as st
 from filters import filter_dataset
@@ -18,26 +19,34 @@ st.set_page_config(
 )
 
 # Page title
-st.markdown("<h1 style='text-align: center;color: yellow'>BankChurners Dashboard</h1> <p>Utilize o menu lateral para filtrar o dataset.</p>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center;color: black'>BankChurners Dashboard</h1> ", unsafe_allow_html=True)
 
 showdataset = st.sidebar.checkbox("Ver dataset")
 
 if showdataset:
     st.sidebar.title("Filtrar Dataset")
+    st.write("Utilize o menu lateral para filtrar o dataset.")
     st.dataframe(filter_dataset(dataset))
+
 else:
     st.write("Para visualizar o Dataset, marque a caixa de seleção no menu lateral.")
 
-chart_data = pd.DataFrame(
-    np.random.randn(20, 3),
-    columns=["Gender", "Customer_Age", "Credit_Limit"]
-)
+#plot graph 1 ----------------
+st.sidebar.title("Gráfico 1")
+# options = dataset
+gen_options = dataset["Gender"].unique()
+gen = st.selectbox("Qual genero quer visualizar?", gen_options)
+dataset = dataset[dataset["Gender"] == gen]
 
-#st.bar_chart(chart_data)
+age_options = dataset["Customer_Age"].unique()
+age = st.selectbox("Qual a idade do cliente?", age_options)
+dataset = dataset[dataset["Customer_Age"] == age]
 
-# plot graph 1
-#categoria_grafico = st.sidebar.selectbox('Selecione a categoria para apresentar no gráfico', options = dataset['Gender'].unique())
-#figura = plot_graph1.plot_graph(dataset)
-#st.pyplot(figura)
+income_count = dataset['Income_Category'].value_counts()
 
-
+fg = plt.figure(figsize=(15,7))
+sns.barplot(x=income_count.index , y=income_count.values)
+plt.title('Income Category')
+plt.xlabel('Income Category')
+plt.ylabel('Count')
+st.pyplot(fg)
