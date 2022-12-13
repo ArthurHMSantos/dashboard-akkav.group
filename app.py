@@ -1,8 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-import altair as alt
-import numpy as np
 import streamlit as st
 from filters import filter_dataset
 import plot_graph1
@@ -32,21 +30,26 @@ else:
     st.write("Para visualizar o Dataset, marque a caixa de seleção no menu lateral.")
 
 #plot graph 1 ----------------
-st.sidebar.title("Gráfico 1")
+st.sidebar.title("Fitros para gráficos")
 # options = dataset
 gen_options = dataset["Gender"].unique()
-gen = st.selectbox("Qual genero quer visualizar?", gen_options)
+gen = st.selectbox("Selecione o genero do cliente", gen_options)
 dataset = dataset[dataset["Gender"] == gen]
 
 age_options = dataset["Customer_Age"].unique()
-age = st.selectbox("Qual a idade do cliente?", age_options)
+age = st.selectbox("Selecione a idade do cliente: ", age_options)
 dataset = dataset[dataset["Customer_Age"] == age]
+
+edu_options = dataset["Education_Level"].unique()
+edu = st.selectbox("Selecione o Nível de Educação", edu_options)
+dataset = dataset[dataset["Education_Level"] == edu]
+
+card_options = dataset["Card_Category"].unique()
+card_type = st.selectbox('Selecione o tipo de cartão:', card_options)
+dataset = dataset[dataset["Card_Category"] == card_type]
 
 income_count = dataset['Income_Category'].value_counts()
 
 fg = plt.figure(figsize=(15,7))
-sns.barplot(x=income_count.index , y=income_count.values)
-plt.title('Income Category')
-plt.xlabel('Income Category')
-plt.ylabel('Count')
+sns.barplot(data=dataset, x=income_count.index , y=income_count.values, hue=income_count.index, palette="Set2", dodge=False)
 st.pyplot(fg)
