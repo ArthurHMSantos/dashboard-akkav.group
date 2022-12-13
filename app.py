@@ -4,6 +4,7 @@ import seaborn as sns
 import numpy as np
 import streamlit as st
 import filterdf
+import plot_graph1
 
 data_url = "BankChurners.csv"
 
@@ -32,10 +33,9 @@ chart_data = pd.DataFrame(
 
 st.bar_chart(chart_data)
 
+# plot graph 1
+#categoria_grafico = st.sidebar.selectbox('Selecione a categoria para apresentar no gráfico', options = df['Gender'].unique())
+figura = plot_graph1.plot_graph(df)
+st.pyplot(figura)
 
-st.write("## Gráfico de Contagem")
-fig = plt.figure(figsize=(15,6))
-sns.set_theme(style='whitegrid')
-sns.countplot(x=df.Customer_Age)
 
-st.pyplot(fig)
