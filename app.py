@@ -2,7 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import streamlit as st
-from filters import filter_dataset
+from filter import filter_dataset, filter_graphs
 import plot_graph1
 
 # Dataset source
@@ -31,22 +31,14 @@ else:
 
 #plot graph 1 ----------------
 st.sidebar.title("Fitros para gráficos")
+
+show_graph_filters = st.sidebar.checkbox("Habilitar filtros para gráficos")
+
 # options = dataset
-gen_options = dataset["Gender"].unique()
-gen = st.selectbox("Selecione o genero do cliente", gen_options)
-dataset = dataset[dataset["Gender"] == gen]
 
-age_options = dataset["Customer_Age"].unique()
-age = st.selectbox("Selecione a idade do cliente: ", age_options)
-dataset = dataset[dataset["Customer_Age"] == age]
+if show_graph_filters:
+    dataset = filter_graphs(dataset)
 
-edu_options = dataset["Education_Level"].unique()
-edu = st.selectbox("Selecione o Nível de Educação", edu_options)
-dataset = dataset[dataset["Education_Level"] == edu]
-
-card_options = dataset["Card_Category"].unique()
-card_type = st.selectbox('Selecione o tipo de cartão:', card_options)
-dataset = dataset[dataset["Card_Category"] == card_type]
 
 income_count = dataset['Income_Category'].value_counts()
 

@@ -74,3 +74,28 @@ def filter_dataset(dataset: pd.DataFrame) -> pd.DataFrame:
                     dataset = dataset[dataset[column].astype(str).str.contains(user_text_input)]
 
     return dataset
+
+def filter_graphs(dataset: pd.DataFrame):
+    st.sidebar.subheader("Filtros")
+    gen = st.sidebar.checkbox("Genero", value=False)
+    if gen:
+        gen_options = dataset["Gender"].unique()
+        gen = st.selectbox("Selecione o genero do cliente", gen_options)
+        dataset = dataset[dataset["Gender"] == gen]
+    age = st.sidebar.checkbox("Idade específica", value=False)
+    if age:
+        age_options = dataset["Customer_Age"].unique()
+        age = st.selectbox("Selecione a idade do cliente: ", age_options)
+        dataset = dataset[dataset["Customer_Age"] == age]
+    edu = st.sidebar.checkbox("Nível de educação", value=False)
+    if edu:
+        edu_options = dataset["Education_Level"].unique()
+        edu = st.selectbox("Selecione o Nível de Educação", edu_options)
+        dataset = dataset[dataset["Education_Level"] == edu]
+    catg = st.sidebar.checkbox("Categoria do cartão", value=False)
+    if catg:
+        card_options = dataset["Card_Category"].unique()
+        card_type = st.selectbox('Selecione o tipo de cartão:', card_options)
+        dataset = dataset[dataset["Card_Category"] == card_type]
+
+    return dataset
