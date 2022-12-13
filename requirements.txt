@@ -7,3 +7,5 @@ streamlit>=1.8.1
 toml>=0.10.2
 xlrd>=2.0.1
 openpyxl>=3.0.9
+matplotlib>=3.5.2
+seaborn
