@@ -8,43 +8,43 @@ from pandas.api.types import (
 )
 
 
-def filter_dataset(df: pd.DataFrame) -> pd.DataFrame:
+def filter_dataset(dataset: pd.DataFrame) -> pd.DataFrame:
     """Filter a dataset using the sidebar."""
     modify = st.sidebar.checkbox("Adicionar filtros")
 
     if not modify:
-        return df
+        return dataset
 
-    df = df.copy()
+    dataset = dataset.copy()
 
     # Try to convert datetimes into a standard format (datetime, no timezone)
-    for col in df.columns:
-        if is_object_dtype(df[col]):
+    for col in dataset.columns:
+        if is_object_dtype(dataset[col]):
             try:
-                df[col] = pd.to_datetime(df[col])
+                dataset[col] = pd.to_datetime(dataset[col])
             except Exception:
                 pass
 
-        if is_datetime64_any_dtype(df[col]):
-            df[col] = df[col].dt.tz_localize(None)
+        if is_datetime64_any_dtype(dataset[col]):
+            dataset[col] = dataset[col].dt.tz_localize(None)
 
     modification_container = st.sidebar.container()
 
     with modification_container:
-        to_filter_columns = st.multiselect("Filtrar quadros com", df.columns)
+        to_filter_columns = st.multiselect("Filtrar quadros com", dataset.columns)
         for column in to_filter_columns:
             left, right = st.columns((1, 23))
             # Treat columns with < 10 unique values as categorical
-            if is_categorical_dtype(df[column]) or df[column].nunique() < 10:
+            if is_categorical_dtype(dataset[column]) or dataset[column].nunique() < 10:
                 user_cat_input = right.multiselect(
                     f"Valores para {column}",
-                    df[column].unique(),
-                    default=list(df[column].unique()),
+                    dataset[column].unique(),
+                    default=list(dataset[column].unique()),
                 )
-                df = df[df[column].isin(user_cat_input)]
-            elif is_numeric_dtype(df[column]):
-                _min = float(df[column].min())
-                _max = float(df[column].max())
+                dataset = dataset[dataset[column].isin(user_cat_input)]
+            elif is_numeric_dtype(dataset[column]):
+                _min = float(dataset[column].min())
+                _max = float(dataset[column].max())
                 step = (_max - _min) / 100
                 user_num_input = right.slider(
                     f"Valores para {column}",
@@ -53,24 +53,24 @@ def filter_dataset(df: pd.DataFrame) -> pd.DataFrame:
                     value=(_min, _max),
                     step=step,
                 )
-                df = df[df[column].between(*user_num_input)]
-            elif is_datetime64_any_dtype(df[column]):
+                dataset = dataset[dataset[column].between(*user_num_input)]
+            elif is_datetime64_any_dtype(dataset[column]):
                 user_date_input = right.date_input(
                     f"Valores para {column}",
                     value=(
-                        df[column].min(),
-                        df[column].max(),
+                        dataset[column].min(),
+                        dataset[column].max(),
                     ),
                 )
                 if len(user_date_input) == 2:
                     user_date_input = tuple(map(pd.to_datetime, user_date_input))
                     start_date, end_date = user_date_input
-                    df = df.loc[df[column].between(start_date, end_date)]
+                    dataset = dataset.loc[dataset[column].between(start_date, end_date)]
             else:
                 user_text_input = right.text_input(
                     f"Substring or regex in {column}",
                 )
                 if user_text_input:
-                    df = df[df[column].astype(str).str.contains(user_text_input)]
+                    dataset = dataset[dataset[column].astype(str).str.contains(user_text_input)]
 
-    return df
+    return dataset

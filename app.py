@@ -3,13 +3,13 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
 import streamlit as st
-import filterdf
+from filters import filter_dataset
 import plot_graph1
 
-data_url = "BankChurners.csv"
+# Dataset source
+dataset = pd.read_csv("BankChurners.csv")
 
-df = pd.read_csv(data_url)
-
+# Streamlit page configs
 st.set_page_config(
     page_title="BankChurners Dashboard",
     page_icon="🦈",
@@ -17,12 +17,14 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-st.markdown("<h1 style='text-align: center;'>BankChurners Dashboard</h1> <p>Utilize o menu lateral para filtrar o dataset.</p>", unsafe_allow_html=True)
-showdatafrane = st.sidebar.checkbox("Mostrar Dataset")
+# Page title
+st.markdown("<h1 style='text-align: center;color: yellow'>BankChurners Dashboard</h1> <p>Utilize o menu lateral para filtrar o dataset.</p>", unsafe_allow_html=True)
 
-if showdatafrane:
+showdataset = st.sidebar.checkbox("Ver dataset")
+
+if showdataset:
     st.sidebar.title("Filtrar Dataset")
-    st.dataframe(filterdf.filter_dataset(df))
+    st.dataframe(filter_dataset(dataset))
 else:
     st.write("Para visualizar o Dataset, marque a caixa de seleção no menu lateral.")
 
@@ -31,11 +33,11 @@ chart_data = pd.DataFrame(
     columns=["Gender", "Customer_Age", "Credit_Limit"]
 )
 
-st.bar_chart(chart_data)
+#st.bar_chart(chart_data)
 
 # plot graph 1
-#categoria_grafico = st.sidebar.selectbox('Selecione a categoria para apresentar no gráfico', options = df['Gender'].unique())
-figura = plot_graph1.plot_graph(df)
-st.pyplot(figura)
+#categoria_grafico = st.sidebar.selectbox('Selecione a categoria para apresentar no gráfico', options = dataset['Gender'].unique())
+#figura = plot_graph1.plot_graph(dataset)
+#st.pyplot(figura)
 
 
