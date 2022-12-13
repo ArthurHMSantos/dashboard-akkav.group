@@ -85,8 +85,9 @@ def filter_graphs(dataset: pd.DataFrame):
     age = st.sidebar.checkbox("Idade específica", value=False)
     if age:
         age_options = dataset["Customer_Age"].unique()
-        age = st.selectbox("Selecione a idade do cliente: ", age_options)
+        age = st.select_slider("Selecione a idade do cliente: ", age_options)
         dataset = dataset[dataset["Customer_Age"] == age]
+
     edu = st.sidebar.checkbox("Nível de educação", value=False)
     if edu:
         edu_options = dataset["Education_Level"].unique()

@@ -41,7 +41,15 @@ if show_graph_filters:
 
 
 income_count = dataset['Income_Category'].value_counts()
+credit_limit = dataset["Credit_Limit"].groupby(dataset["Income_Category"]).mean()
 
 fg = plt.figure(figsize=(15,7))
 sns.barplot(data=dataset, x=income_count.index , y=income_count.values, hue=income_count.index, palette="Set2", dodge=False)
 st.pyplot(fg)
+
+feg = plt.figure(figsize=(15,7))
+sns.barplot(data=dataset, x=income_count.values, y=credit_limit.index, hue=income_count.values, 
+    palette="Set2", dodge=False, order=['Less than $40K', '$40K - $60K', '$60K - $80K', '$80K - $120K', '$120K +'])
+plt.xlabel("Limite de crédito médio")
+plt.ylabel("Categoria de renda")
+st.pyplot(feg)
