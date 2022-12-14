@@ -77,14 +77,15 @@ def filter_dataset(dataset: pd.DataFrame) -> pd.DataFrame:
 
 def filter_graphs(dataset: pd.DataFrame):
     st.sidebar.subheader("Filtros")
-    gen = st.sidebar.checkbox("Genero", value=False)
+    gen = st.sidebar.checkbox("Gênero", value=False)
     if gen:
         gen_options = dataset["Gender"].unique()
-        gen = st.selectbox("Selecione o genero do cliente", gen_options)
+        gen = st.selectbox("Selecione o gênero do cliente", gen_options)
         dataset = dataset[dataset["Gender"] == gen]
     age = st.sidebar.checkbox("Idade específica", value=False)
     if age:
         age_options = dataset["Customer_Age"].unique()
+        age_options = sorted(age_options)
         age = st.select_slider("Selecione a idade do cliente: ", age_options)
         dataset = dataset[dataset["Customer_Age"] == age]
 
@@ -98,5 +99,16 @@ def filter_graphs(dataset: pd.DataFrame):
         card_options = dataset["Card_Category"].unique()
         card_type = st.selectbox('Selecione o tipo de cartão:', card_options)
         dataset = dataset[dataset["Card_Category"] == card_type]
+    estado_civil = st.sidebar.checkbox("Estado Civil", value=False)
+    if estado_civil:
+        marital_options = dataset["Marital_Status"].unique()
+        marital_status = st.selectbox('Selecione o estado civil:', marital_options)
+        dataset = dataset[dataset["Marital_Status"] == marital_status]
+    status = st.sidebar.checkbox("Status do cliente", value=False)
+    if status:
+        status_options = dataset["Attrition_Flag"].unique()
+        status = st.selectbox("Selecione o status do cliente", status_options)
+        dataset = dataset[dataset["Attrition_Flag"] == status]
+        
 
     return dataset

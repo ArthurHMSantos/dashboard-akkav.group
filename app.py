@@ -20,6 +20,7 @@ st.set_page_config(
 # Page title
 st.markdown("<h1 style='text-align: center;color: black'>BankChurners Dashboard</h1> ", unsafe_allow_html=True)
 
+st.sidebar.title("Menu")
 showdataset = st.sidebar.checkbox("Ver dataset")
 
 if showdataset:
@@ -44,19 +45,6 @@ if show_graph_filters:
 income_count = dataset['Income_Category'].value_counts()
 credit_limit = dataset["Credit_Limit"].groupby(dataset["Income_Category"]).mean()
 
-fg = plt.figure(figsize=(15,7))
-sns.barplot(data=dataset, x=income_count.index , y=income_count.values, hue=income_count.index, palette="Set2", dodge=False)
-st.pyplot(fg)
-
-feg = plt.figure(figsize=(15,7))
-sns.barplot(data=dataset, x=income_count.values, y=credit_limit.index, hue=income_count.values, 
-    palette="Set2", dodge=False, order=['Less than $40K', '$40K - $60K', '$60K - $80K', '$80K - $120K', '$120K +'])
-plt.xlabel("Limite de crédito médio")
-plt.ylabel("Categoria de renda")
-st.pyplot(feg)
-
-#plot graph 1 ----------------
-st.sidebar.title("Gráfico 2")
 
 # credit_limit = 
 
@@ -117,5 +105,33 @@ def survey(results, category_names):
     return fig, ax
 
 
-figure, axw = survey(results, category_names)
-st.pyplot(figure)
+
+
+#plot graph 1 ----------------
+st.sidebar.title("Habilitar Gráficos")
+gfc_1 = st.sidebar.checkbox("Gráfico 1")
+gfc_2 = st.sidebar.checkbox("Gráfico 2")
+gfc_3 =st.sidebar.checkbox("Gráfico 3")
+
+if gfc_1:
+    feg = plt.figure(figsize=(15,7))
+    sns.barplot(data=dataset, x=income_count.values, y=credit_limit.index, hue=income_count.values, 
+    palette="Set2", dodge=False, order=['Less than $40K', '$40K - $60K', '$60K - $80K', '$80K - $120K', '$120K +'])
+    plt.xlabel("Limite de crédito médio")
+    plt.ylabel("Categoria de renda")
+    st.markdown("<h3 style='text-align: center;color: black'>Limite de crédito médio por categoria de renda</h3> ", unsafe_allow_html=True)
+    st.pyplot(feg)
+if gfc_2:
+
+    figure, axw = survey(results, category_names)
+    st.markdown("<h3 style='text-align: center;color: black'>Faixa de limite de crédito por nível de escolaridade</h3> ", unsafe_allow_html=True)
+    st.pyplot(figure)
+
+if gfc_3:
+    eixoX = st.sidebar.selectbox("Selecione o eixo X para mudar o grafíco 3", dataset.columns)
+    eixoY = 'Credit_Limit'
+    #st.line_chart(data=dataset, x = eixoX, y= eixoY, width=0, height=0, use_container_width=True)
+    st.bar_chart(data=dataset, x = eixoX, y= eixoY, width=0, height=0, use_container_width=True)
+    #st.area_chart(data=dataset, x = eixoX, y= eixoY, width=0, height=0, use_container_width=True)
+
+
