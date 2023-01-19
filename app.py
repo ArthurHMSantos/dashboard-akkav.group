@@ -2,6 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import streamlit as st
+from PIL import Image
 import numpy as np
 from filter import filter_dataset
 
@@ -193,9 +194,24 @@ if enable_graphics:
 
 
 if not enable_graphics and not showdataset:
+
+    image = Image.open('Credit card-bro.png')
+
+    col1, col2, col3 = st.columns([1,2,1])
+
+    with col1:
+        st.write("")
+
+    with col2:
+        st.image(image, width=350)
+
+    with col3:
+        st.write("")
+
     st.write("Este dataset consiste em dados de 10.000 usuários de cartão de crédito de um determinado", 
     "banco. Esses dados consistem em idade, salário, estado civil, nível de escolaridade, gênero, ",
     "entre outras informações relevantes.")
 
     st.write("O dataset foi obtido através do seguinte link: (https://www.kaggle.com/datasets/sakshigoyal7/credit-card-customers)")
 
+    
