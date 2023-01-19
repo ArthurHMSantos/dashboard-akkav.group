@@ -3,11 +3,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import streamlit as st
 import numpy as np
-from filter import filter_dataset, filter_graphs
-import plot_graph1
-
-# Dataset source
-dataset = pd.read_csv("BankChurners.csv")
+from filter import filter_dataset
 
 # Streamlit page configs
 st.set_page_config(
@@ -16,37 +12,23 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded",
 )
+st.set_option('deprecation.showPyplotGlobalUse', False)
+
+# Dataset source
+dataset = pd.read_csv("BankChurners.csv")
 
 # Page title
-st.markdown("<h1 style='text-align: center;color: black'>BankChurners Dashboard</h1> ", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center;color: #c9c904'>Credit Card Customers</h1> ", unsafe_allow_html=True)
+st.markdown("***")
 
+# Sidebar
 st.sidebar.title("Menu")
-showdataset = st.sidebar.checkbox("Ver dataset")
+showdataset = st.sidebar.checkbox("Visualizar dataset")
 
 if showdataset:
     st.sidebar.title("Filtrar Dataset")
     st.write("Utilize o menu lateral para filtrar o dataset.")
     st.dataframe(filter_dataset(dataset))
-
-else:
-    st.write("Para visualizar o Dataset, marque a caixa de seleção no menu lateral.")
-
-#plot graph 1 ----------------
-st.sidebar.title("Fitros para gráficos")
-
-show_graph_filters = st.sidebar.checkbox("Habilitar filtros para gráficos")
-
-# options = dataset
-
-if show_graph_filters:
-    dataset = filter_graphs(dataset)
-
-
-income_count = dataset['Income_Category'].value_counts()
-credit_limit = dataset["Credit_Limit"].groupby(dataset["Income_Category"]).mean()
-
-
-# credit_limit = 
 
 lowestcredit = dataset[dataset['Credit_Limit'] <= 2500]['Education_Level'].value_counts()
 lowcredit = dataset[dataset['Credit_Limit'] <= 4000][dataset['Credit_Limit'] > 2500]['Education_Level'].value_counts()
@@ -104,34 +86,116 @@ def survey(results, category_names):
 
     return fig, ax
 
+# Enable graphics
+st.sidebar.title("Gráficos")
+enable_graphics = st.sidebar.checkbox("Habilitar gráficos")
+
+if enable_graphics:
+
+    graph = st.sidebar.radio(" ", options=('Gráfico 1', 'Gráfico 2', 'Gráfico 3', 'Gráfico 4', 'Gráfico 5'))
+
+    if graph == 'Gráfico 1':
+
+        credit_limit = dataset["Credit_Limit"].groupby(dataset["Income_Category"]).mean()
+
+        st.markdown("<h3 style='text-align: center;color: #d87093'>Limite de crédito por categoria de renda</h3> ", unsafe_allow_html=True)
+        feg = plt.figure(figsize=(15,7))
+        sns.barplot(data=dataset, x=credit_limit.index, y=credit_limit.values,
+        palette="Set2", dodge=False, order=['Less than $40K', '$40K - $60K', '$60K - $80K', '$80K - $120K', '$120K +'])
+        plt.ylabel("Limite de crédito médio")
+        plt.xlabel("Categoria de renda")
+        st.pyplot(feg)
+        
+        st.write(credit_limit)
+        
+    elif graph == 'Gráfico 2':
+
+        st.markdown("<h3 style='text-align: center;color: #d87093'>Faixa de limite de crédito por nível de escolaridade</h3> ", unsafe_allow_html=True)
+        figure, axw = survey(results, category_names)
+        st.pyplot(figure)
+
+    elif graph == 'Gráfico 3':
+
+        eixoX = st.sidebar.selectbox("Selecione o eixo X ", dataset.columns.delete(0))
+        
+        credit_limit = dataset["Credit_Limit"].groupby(dataset[f"{eixoX}"]).mean()
+
+        st.markdown(f"<h3 style='text-align: center;color: #d87093'>Gráfico interativo: Limite de crédito X {eixoX}</h3> ", unsafe_allow_html=True)
+        feg = plt.figure(figsize=(15,7))
+        sns.barplot(data=dataset, x=credit_limit.index, y=credit_limit.values,
+        palette="Set2", dodge=False)
+        plt.ylabel("Limite de crédito médio")
+        plt.xlabel(f"{eixoX}")
+        st.pyplot(feg)
+    
+    elif graph == 'Gráfico 4':
+
+        st.markdown("<h3 style='text-align: center;color: #d87093'>Categoria de cartão de crédito por gênero</h3>", unsafe_allow_html=True)
+
+        male = dataset["Card_Category"].where(dataset["Gender"] == "M").value_counts().values
+        female =  dataset["Card_Category"].where(dataset["Gender"] == "F").value_counts().values
+        card_categorys = (dataset["Card_Category"].value_counts()).index
+
+        f = plt.figure()
+        f.set_figwidth(4)
+        f.set_figheight(2)
+        plt.bar(card_categorys, female, color="#6495ED")
+        plt.bar(card_categorys, male, bottom=female, color="#6A5ACD")
+        plt.legend(["F", "M"])
+        fig = plt.plot()
+        st.pyplot(fig)
+
+        st.markdown("<h4 style='text-align: center;color: #dab99c'>Escala maior</h3> ", unsafe_allow_html=True)
+        plt.bar(card_categorys, female, color="#6495ED")
+        plt.bar(card_categorys, male, bottom=female, color="#6A5ACD")
+        plt.legend(["F", "M"])
+        plt.ylim(0, 600)
+        fig = plt.plot()
+        st.pyplot(fig)
+
+        st.write("Clientes homens por categoria de cartão de crédito:")
+        st.write(dataset["Card_Category"].where(dataset["Gender"] == "M").value_counts())
+        st.write("Clientes mulheres por categoria de cartão de crédito:")
+        st.write(dataset["Card_Category"].where(dataset["Gender"] == "F").value_counts())
+    
+    elif graph == 'Gráfico 5':
+
+        eixoX = st.sidebar.selectbox("Selecione o eixo X ", dataset.columns.delete([0, 1]))
+
+        st.markdown(f"<h3 style='text-align: center;color: #d87093'>Gráfico interativo: Clientes perdidos por {eixoX}</h3> ", unsafe_allow_html=True)
+        
+        attrited_customers = dataset["Attrition_Flag"].where(dataset["Attrition_Flag"] == 'Attrited Customer')
+
+        data_eixoX = (dataset[f'{eixoX}'].value_counts()).index.tolist()
+        data = []
+
+        for d in data_eixoX:
+            test = attrited_customers.where(dataset[f'{eixoX}'] == d).value_counts().values
+            if test:
+                data.append(attrited_customers.where(dataset[f'{eixoX}'] == d).value_counts().values[0])
+            else:
+                data.append(0)
+        
+        data = pd.Series(data)
+
+        feg = plt.figure(figsize=(15,7))
+        sns.barplot(data=dataset, x=data_eixoX, y=data.values,
+        palette="Set2", dodge=False)
+        plt.ylabel("Clientes perdidos")
+        plt.xlabel(f"{eixoX}")
+        st.pyplot(feg)
+
+    else:
+        st.write('Erro. Recarregue a página e tente novamente.')
+        
 
 
 
-#plot graph 1 ----------------
-st.sidebar.title("Habilitar Gráficos")
-gfc_1 = st.sidebar.checkbox("Gráfico 1")
-gfc_2 = st.sidebar.checkbox("Gráfico 2")
-gfc_3 =st.sidebar.checkbox("Gráfico 3")
 
-if gfc_1:
-    feg = plt.figure(figsize=(15,7))
-    sns.barplot(data=dataset, x=income_count.values, y=credit_limit.index, hue=income_count.values, 
-    palette="Set2", dodge=False, order=['Less than $40K', '$40K - $60K', '$60K - $80K', '$80K - $120K', '$120K +'])
-    plt.xlabel("Limite de crédito médio")
-    plt.ylabel("Categoria de renda")
-    st.markdown("<h3 style='text-align: center;color: black'>Limite de crédito médio por categoria de renda</h3> ", unsafe_allow_html=True)
-    st.pyplot(feg)
-if gfc_2:
+if not enable_graphics and not showdataset:
+    st.write("Este dataset consiste em dados de 10.000 usuários de cartão de crédito de um determinado", 
+    "banco. Esses dados consistem em idade, salário, estado civil, nível de escolaridade, gênero, ",
+    "entre outras informações relevantes.")
 
-    figure, axw = survey(results, category_names)
-    st.markdown("<h3 style='text-align: center;color: black'>Faixa de limite de crédito por nível de escolaridade</h3> ", unsafe_allow_html=True)
-    st.pyplot(figure)
-
-if gfc_3:
-    eixoX = st.sidebar.selectbox("Selecione o eixo X para mudar o grafíco 3", dataset.columns)
-    eixoY = 'Credit_Limit'
-    #st.line_chart(data=dataset, x = eixoX, y= eixoY, width=0, height=0, use_container_width=True)
-    st.bar_chart(data=dataset, x = eixoX, y= eixoY, width=0, height=0, use_container_width=True)
-    #st.area_chart(data=dataset, x = eixoX, y= eixoY, width=0, height=0, use_container_width=True)
-
+    st.write("O dataset foi obtido através do seguinte link: (https://www.kaggle.com/datasets/sakshigoyal7/credit-card-customers)")
 
