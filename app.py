@@ -93,9 +93,9 @@ enable_graphics = st.sidebar.checkbox("Habilitar gráficos")
 
 if enable_graphics:
 
-    graph = st.sidebar.radio(" ", options=('Gráfico 1', 'Gráfico 2', 'Gráfico 3', 'Gráfico 4', 'Gráfico 5'))
+    graph = st.sidebar.radio(" ", options=('Limite de crédito por categoria de renda', 'Faixa de limite de crédito por nível de escolaridade', 'Categoria de cartão de crédito por gênero' , 'Limite de crédito por coluna a ser selecionada', 'Clientes perdidos por coluna a ser selecionada' ))
 
-    if graph == 'Gráfico 1':
+    if graph == 'Limite de crédito por categoria de renda':
 
         credit_limit = dataset["Credit_Limit"].groupby(dataset["Income_Category"]).mean()
 
@@ -109,27 +109,13 @@ if enable_graphics:
         
         st.write(credit_limit)
         
-    elif graph == 'Gráfico 2':
+    elif graph == 'Faixa de limite de crédito por nível de escolaridade':
 
         st.markdown("<h3 style='text-align: center;color: #d87093'>Faixa de limite de crédito por nível de escolaridade</h3> ", unsafe_allow_html=True)
         figure, axw = survey(results, category_names)
         st.pyplot(figure)
 
-    elif graph == 'Gráfico 3':
-
-        eixoX = st.sidebar.selectbox("Selecione o eixo X ", dataset.columns.delete(0))
-        
-        credit_limit = dataset["Credit_Limit"].groupby(dataset[f"{eixoX}"]).mean()
-
-        st.markdown(f"<h3 style='text-align: center;color: #d87093'>Gráfico interativo: Limite de crédito X {eixoX}</h3> ", unsafe_allow_html=True)
-        feg = plt.figure(figsize=(15,7))
-        sns.barplot(data=dataset, x=credit_limit.index, y=credit_limit.values,
-        palette="Set2", dodge=False)
-        plt.ylabel("Limite de crédito médio")
-        plt.xlabel(f"{eixoX}")
-        st.pyplot(feg)
-    
-    elif graph == 'Gráfico 4':
+    elif graph == 'Categoria de cartão de crédito por gênero':
 
         st.markdown("<h3 style='text-align: center;color: #d87093'>Categoria de cartão de crédito por gênero</h3>", unsafe_allow_html=True)
 
@@ -158,10 +144,24 @@ if enable_graphics:
         st.write(dataset["Card_Category"].where(dataset["Gender"] == "M").value_counts())
         st.write("Clientes mulheres por categoria de cartão de crédito:")
         st.write(dataset["Card_Category"].where(dataset["Gender"] == "F").value_counts())
-    
-    elif graph == 'Gráfico 5':
 
-        eixoX = st.sidebar.selectbox("Selecione o eixo X ", dataset.columns.delete([0, 1]))
+    elif graph == 'Limite de crédito por coluna a ser selecionada':
+
+        eixoX = st.sidebar.selectbox("Selecione a coluna desejada:", dataset.columns.delete(0))
+        
+        credit_limit = dataset["Credit_Limit"].groupby(dataset[f"{eixoX}"]).mean()
+
+        st.markdown(f"<h3 style='text-align: center;color: #d87093'>Gráfico interativo: Limite de crédito X {eixoX}</h3> ", unsafe_allow_html=True)
+        feg = plt.figure(figsize=(15,7))
+        sns.barplot(data=dataset, x=credit_limit.index, y=credit_limit.values,
+        palette="Set2", dodge=False)
+        plt.ylabel("Limite de crédito médio")
+        plt.xlabel(f"{eixoX}")
+        st.pyplot(feg)
+    
+    elif graph == 'Clientes perdidos por coluna a ser selecionada':
+
+        eixoX = st.sidebar.selectbox("Selecione a coluna desejada:", dataset.columns.delete([0, 1]))
 
         st.markdown(f"<h3 style='text-align: center;color: #d87093'>Gráfico interativo: Clientes perdidos por {eixoX}</h3> ", unsafe_allow_html=True)
         
