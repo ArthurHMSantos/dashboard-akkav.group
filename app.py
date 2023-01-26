@@ -189,10 +189,6 @@ if enable_graphics:
     else:
         st.write('Erro. Recarregue a página e tente novamente.')
         
-
-
-
-
 if not enable_graphics and not showdataset:
 
     image = Image.open('Credit card-bro.png')
