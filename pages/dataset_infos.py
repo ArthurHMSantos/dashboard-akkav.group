@@ -24,7 +24,7 @@ st.markdown("<h1 style='text-align: center;color: #c9c904'>Dataset Infos</h1> ",
 line_break()
 
 # Quantidade M x F
-st.markdown("<h3 style='color: #d87093;'>Quantidade M x F</h3> ", unsafe_allow_html=True)
+st.markdown("<h3 style='color: #d87093;'>Quantidade</h3> ", unsafe_allow_html=True)
 st.write('Número de clientes: ', existing_customer.value_counts().count())
 st.write('(Masculino: ', male_existing_customer.value_counts().count(), ' | Feminino: ', female_existing_customer.value_counts().count(), ')')
 st.write('Número de ex-clientes: ', attrited_customer.value_counts().count())
@@ -32,7 +32,7 @@ st.write('(Masculino: ', male_attrited_customer.value_counts().count(), ' | Femi
 line_break()
 
 # Escolaridade M x F
-st.markdown("<h3 style='color: #d87093;text-align: center;'>Escolaridade M x F</h3> ", unsafe_allow_html=True)
+st.markdown("<h3 style='color: #d87093;text-align: center;'>Escolaridade</h3> ", unsafe_allow_html=True)
 col1, col2, col3, col4 = st.columns(4)
 col2.caption('Clientes [Masculino]: ')
 col2.write(dataset['Education_Level'].where(dataset['Attrition_Flag'] == 'Existing Customer').where(dataset['Gender'] == 'M').value_counts())
@@ -45,7 +45,7 @@ col3.write(dataset['Education_Level'].where(dataset['Attrition_Flag'] == 'Attrit
 line_break()
 
 # Estado civil M x F
-st.markdown("<h3 style='color: #d87093;text-align: center;'>Estado Civil M x F</h3> ", unsafe_allow_html=True)
+st.markdown("<h3 style='color: #d87093;text-align: center;'>Estado Civil</h3> ", unsafe_allow_html=True)
 col1, col2, col3, col4 = st.columns(4)
 col2.caption('Clientes [Masculino]: ')
 col2.write(dataset['Marital_Status'].where(dataset['Attrition_Flag'] == 'Existing Customer').where(dataset['Gender'] == 'M').value_counts())
@@ -58,7 +58,7 @@ col3.write(dataset['Marital_Status'].where(dataset['Attrition_Flag'] == 'Attrite
 line_break()
 
 # Limite de crédito M x F
-st.markdown("<h3 style='color: #d87093;text-align: center;'>Limite de crédito M x F</h3> ", unsafe_allow_html=True)
+st.markdown("<h3 style='color: #d87093;text-align: center;'>Limite de crédito</h3> ", unsafe_allow_html=True)
 mean_m = dataset['Credit_Limit'].where(dataset['Attrition_Flag'] == 'Existing Customer').where(dataset['Gender'] == 'M').mean()
 median_m = dataset['Credit_Limit'].where(dataset['Attrition_Flag'] == 'Existing Customer').where(dataset['Gender'] == 'M').median()
 std_m = dataset['Credit_Limit'].where(dataset['Attrition_Flag'] == 'Existing Customer').where(dataset['Gender'] == 'M').std()
@@ -96,7 +96,7 @@ st.markdown(f'* Mediana: ${ex_median_f:.2f}')
 st.markdown(f'* Desvio Padrão: {ex_std_f:.2f}')
 
 # Categoria do cartão M x F
-st.markdown("<h3 style='color: #d87093;text-align: center;'>Categoria do cartão M x F</h3> ", unsafe_allow_html=True)
+st.markdown("<h3 style='color: #d87093;text-align: center;'>Categoria do cartão</h3> ", unsafe_allow_html=True)
 
 cards_m = dataset['Card_Category'].where(dataset['Attrition_Flag'] == 'Existing Customer').where(dataset['Gender'] == 'M').value_counts()
 ex_cards_m = dataset['Card_Category'].where(dataset['Attrition_Flag'] == 'Attrited Customer').where(dataset['Gender'] == 'M').value_counts()
@@ -113,4 +113,65 @@ col2.caption('Clientes [Feminino]: ')
 col2.write(cards_f)
 col3.caption('Ex-clientes [Feminino]: ')
 col3.write(ex_cards_f)
+line_break()
+
+# Período de relacionamento com o banco M x F
+st.markdown("<h3 style='color: #d87093;text-align: center;'>Período de relacionamento com o banco (média)</h3> ", unsafe_allow_html=True)
+
+months_m = dataset['Months_on_book'].where(dataset['Attrition_Flag'] == 'Existing Customer').where(dataset['Gender'] == 'M').mean()
+months_ex_m = dataset['Months_on_book'].where(dataset['Attrition_Flag'] == 'Attrited Customer').where(dataset['Gender'] == 'M').mean()
+
+months_f = dataset['Months_on_book'].where(dataset['Attrition_Flag'] == 'Existing Customer').where(dataset['Gender'] == 'F').mean()
+months_ex_f = dataset['Months_on_book'].where(dataset['Attrition_Flag'] == 'Attrited Customer').where(dataset['Gender'] == 'F').mean()
+
+col1, col2, col3, col4 = st.columns(4)
+col2.caption('Clientes [Masculino]: ')
+col2.write(f'{months_m:.2f}')
+col3.caption('Ex-clientes [Masculino]: ')
+col3.write(f'{months_ex_m:.2f}')
+col2.caption('Clientes [Feminino]: ')
+col2.write(f'{months_f:.2f}')
+col3.caption('Ex-clientes [Feminino]: ')
+col3.write(f'{months_ex_f:.2f}')
+line_break()
+
+
+# Renda anual
+st.markdown("<h3 style='color: #d87093;text-align: center;'>Renda anual</h3> ", unsafe_allow_html=True)
+
+income_m = dataset['Income_Category'].where(dataset['Gender'] == 'M').where(dataset['Attrition_Flag'] == 'Existing Customer').value_counts()
+income_ex_m = dataset['Income_Category'].where(dataset['Gender'] == 'M').where(dataset['Gender'] == 'M').where(dataset['Attrition_Flag'] == 'Attrited Customer').value_counts()
+
+income_f = dataset['Income_Category'].where(dataset['Gender'] == 'F').where(dataset['Attrition_Flag'] == 'Existing Customer').value_counts()
+income_ex_f = dataset['Income_Category'].where(dataset['Gender'] == 'F').where(dataset['Attrition_Flag'] == 'Attrited Customer').value_counts()
+
+col1, col2, col3, col4 = st.columns(4)
+col2.caption('Clientes [Masculino]: ')
+col2.write(income_m)
+col3.caption('Ex-clientes [Masculino]: ')
+col3.write(income_ex_m)
+col2.caption('Clientes [Feminino]: ')
+col2.write(income_f)
+col3.caption('Ex-clientes [Feminino]: ')
+col3.write(income_ex_f)
+line_break()
+
+# Dependentes
+st.markdown("<h3 style='color: #d87093;text-align: center;'>Número de dependentes</h3> ", unsafe_allow_html=True)
+
+relationship_m = dataset['Dependent_count'].where(dataset['Attrition_Flag'] == 'Existing Customer').where(dataset['Gender'] == 'M').mean()
+relationship_ex_m = dataset['Dependent_count'].where(dataset['Attrition_Flag'] == 'Attrited Customer').where(dataset['Gender'] == 'M').mean()
+
+relationship_f = dataset['Dependent_count'].where(dataset['Attrition_Flag'] == 'Existing Customer').where(dataset['Gender'] == 'F').mean()
+relationship_ex_f = dataset['Dependent_count'].where(dataset['Attrition_Flag'] == 'Attrited Customer').where(dataset['Gender'] == 'F').mean()
+
+col1, col2, col3, col4 = st.columns(4)
+col2.caption('Clientes [Masculino]: ')
+col2.write(f'{relationship_m:.2f}')
+col3.caption('Ex-clientes [Masculino]: ')
+col3.write(f'{relationship_ex_m:.2f}')
+col2.caption('Clientes [Feminino]: ')
+col2.write(f'{relationship_f:.2f}')
+col3.caption('Ex-clientes [Feminino]: ')
+col3.write(f'{relationship_ex_f:.2f}')
 line_break()
