@@ -20,7 +20,7 @@ female_existing_customer = existing_customer.where(dataset['Gender'] == 'F')
 male_attrited_customer = attrited_customer.where(dataset['Gender'] == 'M')
 female_attrited_customer = attrited_customer.where(dataset['Gender'] == 'F')
 
-st.markdown("<h1 style='text-align: center;color: #c9c904'>Dataset Infos</h1> ", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center;color: #c9c904'>Informações do Dataset</h1> ", unsafe_allow_html=True)
 line_break()
 
 # Quantidade M x F
