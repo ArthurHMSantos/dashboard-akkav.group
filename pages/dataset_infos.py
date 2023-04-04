@@ -10,7 +10,7 @@ st.set_page_config(
 def line_break():
     st.markdown('  ')
 
-dataset = pd.read_csv("BankChurners.csv")
+dataset = pd.read_csv("./assets/BankChurners.csv")
 
 # Variáveis
 existing_customer = dataset.where(dataset['Attrition_Flag'] == 'Existing Customer')

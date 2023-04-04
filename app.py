@@ -16,7 +16,7 @@ st.set_page_config(
 st.set_option('deprecation.showPyplotGlobalUse', False)
 
 # Dataset source
-dataset = pd.read_csv("BankChurners.csv")
+dataset = pd.read_csv("./assets/BankChurners.csv")
 
 # Page title
 st.markdown("<h1 style='text-align: center;color: #c9c904'>Credit Card Customers</h1> ", unsafe_allow_html=True)
@@ -191,7 +191,7 @@ if enable_graphics:
         
 if not enable_graphics and not showdataset:
 
-    image = Image.open('Credit card-bro.png')
+    image = Image.open('./assets/Credit card-bro.png')
 
     col1, col2, col3 = st.columns([1,2,1])
 
