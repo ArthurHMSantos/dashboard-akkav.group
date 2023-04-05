@@ -69,60 +69,60 @@ def predicting_churn(user_input):
     user_input_scaled = preprocess_user_input(user_input, scaler, le, le_gender, le_education, le_cat, le_card)
     state = predict_churn(user_input_scaled, rfc)
 
-    # Test the classifier with new data
-    print("ESPERADOS: 5 EXISTING")
-    user2 = [43, 'F', 4, 'High School', 'Unknown', 'Less than $40K', 'Blue', 2786, 39, 993, 0.644]
-    user_input = preprocess_user_input(user2, scaler, le,le_gender, le_education, le_cat, le_card)
-    state = predict_churn(user_input, rfc)
-    print("Predicted State: ", state)
+    # # Test the classifier with new data
+    # print("ESPERADOS: 5 EXISTING")
+    # user2 = [43, 'F', 4, 'High School', 'Unknown', 'Less than $40K', 'Blue', 2786, 39, 993, 0.644]
+    # user_input = preprocess_user_input(user2, scaler, le,le_gender, le_education, le_cat, le_card)
+    # state = predict_churn(user_input, rfc)
+    # print("Predicted State: ", state)
 
-    # wait :  existing
-    user2 = [41, 'F', 3, 'College', 'Married', 'Less than $40K', 'Blue', 1438.3, 37, 673.3, 0.532]
-    user_input = preprocess_user_input(user2, scaler, le,le_gender, le_education, le_cat, le_card)
-    state = predict_churn(user_input, rfc)
-    print("Predicted State: ", state)
+    # # wait :  existing
+    # user2 = [41, 'F', 3, 'College', 'Married', 'Less than $40K', 'Blue', 1438.3, 37, 673.3, 0.532]
+    # user_input = preprocess_user_input(user2, scaler, le,le_gender, le_education, le_cat, le_card)
+    # state = predict_churn(user_input, rfc)
+    # print("Predicted State: ", state)
 
-    user2 = [32,"M",0,"High School","Unknown","$80K - $120K","Blue",15412, 36, 15412, 0.0]
-    user_input = preprocess_user_input(user2, scaler, le,le_gender, le_education, le_cat, le_card)
-    state = predict_churn(user_input, rfc)
-    print("Predicted State: ", state)
+    # user2 = [32,"M",0,"High School","Unknown","$80K - $120K","Blue",15412, 36, 15412, 0.0]
+    # user_input = preprocess_user_input(user2, scaler, le,le_gender, le_education, le_cat, le_card)
+    # state = predict_churn(user_input, rfc)
+    # print("Predicted State: ", state)
 
-    user2 = [45,"M",2,"Graduate","Married","Unknown","Platinum", 34516, 31, 33208, 0.0380]
-    user_input = preprocess_user_input(user2, scaler, le,le_gender, le_education, le_cat, le_card)
-    state = predict_churn(user_input, rfc)
-    print("Predicted State: ", state)
+    # user2 = [45,"M",2,"Graduate","Married","Unknown","Platinum", 34516, 31, 33208, 0.0380]
+    # user_input = preprocess_user_input(user2, scaler, le,le_gender, le_education, le_cat, le_card)
+    # state = predict_churn(user_input, rfc)
+    # print("Predicted State: ", state)
 
-    user2 = [56,"F",1,"High School","Single","$60K - $80K","Blue", 13940, 34, 11831, 0.151]
-    user_input = preprocess_user_input(user2, scaler, le,le_gender, le_education, le_cat, le_card)
-    state = predict_churn(user_input, rfc)
-    print("Predicted State: ", state)
+    # user2 = [56,"F",1,"High School","Single","$60K - $80K","Blue", 13940, 34, 11831, 0.151]
+    # user_input = preprocess_user_input(user2, scaler, le,le_gender, le_education, le_cat, le_card)
+    # state = predict_churn(user_input, rfc)
+    # print("Predicted State: ", state)
 
 
-    print("ESPERADOS: 5 ATTRITED")
+    # print("ESPERADOS: 5 ATTRITED")
 
-    user2 = [62, 'F', 0, "Graduate", "Married", "Less than $40K", "Blue", 1438.3, 49, 1438.3, 0.0] 
-    user_input = preprocess_user_input(user2, scaler, le,le_gender, le_education, le_cat, le_card)
-    state = predict_churn(user_input, rfc)
-    print("Predicted State: ", state)
+    # user2 = [62, 'F', 0, "Graduate", "Married", "Less than $40K", "Blue", 1438.3, 49, 1438.3, 0.0] 
+    # user_input = preprocess_user_input(user2, scaler, le,le_gender, le_education, le_cat, le_card)
+    # state = predict_churn(user_input, rfc)
+    # print("Predicted State: ", state)
 
-    user2 = [26,"F",0,"High School","Single","$40K - $60K","Blue", 1730, 13, 114.0, 0.9340]
-    user_input = preprocess_user_input(user2, scaler, le,le_gender, le_education, le_cat, le_card)
-    state = predict_churn(user_input, rfc)
-    print("Predicted State: ", state)
+    # user2 = [26,"F",0,"High School","Single","$40K - $60K","Blue", 1730, 13, 114.0, 0.9340]
+    # user_input = preprocess_user_input(user2, scaler, le,le_gender, le_education, le_cat, le_card)
+    # state = predict_churn(user_input, rfc)
+    # print("Predicted State: ", state)
 
-    user2 = [46, "F", 3, "Graduate", "Single", "Less than $40K", "Blue", 8551, 28, 7484, 0.125]
-    user_input = preprocess_user_input(user2, scaler, le,le_gender, le_education, le_cat, le_card)
-    state = predict_churn(user_input, rfc)
-    print("Predicted State: ", state)
+    # user2 = [46, "F", 3, "Graduate", "Single", "Less than $40K", "Blue", 8551, 28, 7484, 0.125]
+    # user_input = preprocess_user_input(user2, scaler, le,le_gender, le_education, le_cat, le_card)
+    # state = predict_churn(user_input, rfc)
+    # print("Predicted State: ", state)
 
-    user2 = [39,"M",2,"Uneducated","Single","$60K - $80K","Blue", 13961, 29, 2187, 0.0]
-    user_input = preprocess_user_input(user2, scaler, le,le_gender, le_education, le_cat, le_card)
-    state = predict_churn(user_input, rfc)
-    print("Predicted State: ", state)
+    # user2 = [39,"M",2,"Uneducated","Single","$60K - $80K","Blue", 13961, 29, 2187, 0.0]
+    # user_input = preprocess_user_input(user2, scaler, le,le_gender, le_education, le_cat, le_card)
+    # state = predict_churn(user_input, rfc)
+    # print("Predicted State: ", state)
 
-    user2 = [34,"F",3,"Graduate","Married","Less than $40K","Gold", 15487, 36, 13640, 0.119]
-    user_input = preprocess_user_input(user2, scaler, le,le_gender, le_education, le_cat, le_card)
-    state = predict_churn(user_input, rfc)
-    print("Predicted State: ", state)
+    # user2 = [34,"F",3,"Graduate","Married","Less than $40K","Gold", 15487, 36, 13640, 0.119]
+    # user_input = preprocess_user_input(user2, scaler, le,le_gender, le_education, le_cat, le_card)
+    # state = predict_churn(user_input, rfc)
+    # print("Predicted State: ", state)
 
     return state
