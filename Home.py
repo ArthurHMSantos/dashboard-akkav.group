@@ -209,5 +209,3 @@ if not enable_graphics and not showdataset:
     "entre outras informações relevantes.")
 
     st.write("O dataset foi obtido através do seguinte link: (https://www.kaggle.com/datasets/sakshigoyal7/credit-card-customers)")
-
-    
