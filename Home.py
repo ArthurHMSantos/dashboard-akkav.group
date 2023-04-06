@@ -93,7 +93,7 @@ enable_graphics = st.sidebar.checkbox("Habilitar gráficos")
 
 if enable_graphics:
 
-    graph = st.sidebar.radio(" ", options=('Limite de crédito por categoria de renda', 'Faixa de limite de crédito por nível de escolaridade', 'Categoria de cartão de crédito por gênero' , 'Limite de crédito por coluna a ser selecionada', 'Clientes perdidos por coluna a ser selecionada' ))
+    graph = st.sidebar.radio(" ", options=('Limite de crédito por categoria de renda', 'Faixa de limite de crédito por nível de escolaridade', 'Categoria de cartão de crédito por gênero' , 'Limite de crédito por coluna a ser selecionada', 'Clientes perdidos por coluna a ser selecionada', 'Gráfico de Caixa por coluna a ser selecioanda'))
 
     if graph == 'Limite de crédito por categoria de renda':
 
@@ -186,6 +186,22 @@ if enable_graphics:
         plt.xlabel(f"{eixoX}")
         st.pyplot(feg)
 
+    elif graph == 'Gráfico de Caixa por coluna a ser selecioanda':
+        dataset = dataset.drop('CLIENTNUM', axis=1)
+        eixoX = st.sidebar.selectbox("Selecione a coluna desejada:", dataset.select_dtypes(exclude='object').columns)
+
+        st.markdown(f"<h3 style='text-align: center;color: #d87093'>Gráfico interativo: Clientes perdidos por {eixoX}</h3> ", unsafe_allow_html=True)
+        sns.set(style='whitegrid')
+        plt.figure(figsize=(8,6))
+
+        sns.boxplot(x=eixoX, data=dataset, color='purple', saturation=0.7)
+        plt.title(f"Gráfico de Caixa: {eixoX}")
+        plt.title(f'Distribuição do {eixoX}', fontsize=16)
+        plt.xlabel(f'{eixoX}', fontsize=14)
+        plt.xticks(fontsize=12)
+
+        st.pyplot()
+        
     else:
         st.write('Erro. Recarregue a página e tente novamente.')
         
