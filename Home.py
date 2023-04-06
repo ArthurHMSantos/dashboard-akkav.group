@@ -202,11 +202,11 @@ if enable_graphics:
         plt.xlabel(f'{eixoX}', fontsize=14)
         plt.xticks(fontsize=12)
 
+        st.pyplot()
         st.write("Ao analisarmos diferentes colunas com o gráfico de caixa, é possivel tirar algumas conclusões.")
         st.write("Considerando a análise dos gráficos de caixa de colunas como a de idade dos clientes e do tempo de relacionamento com o banco, por exemplo, as quais apresentam poucos outliers, optou-se por não excluir os outliers de colunas que apresentassem essa tendência, afinal como o número de outliers era baixo, não implicariam em mudanças significativas na análise exploratória dos dados.")
         st.write("Já se analisarmos os gráficos que apresentam bastante outliers, como a coluna de limite de crédito, também não foi feita a retirada dos outliers devido à impossibilidade de tratar essa grande quantidade de outliers sem influenciar no resultado da análise de dados.")
         st.write("Outro exemplo de gráfico de caixa que pode ser encontrado é o gráfico criado com número de dependentes, onde não foram identificados outliers, não sendo necessário nenhum tratamento.")
-        st.pyplot()
 
     else:
         st.write('Erro. Recarregue a página e tente novamente.')
