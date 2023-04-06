@@ -191,6 +191,7 @@ if enable_graphics:
         dataset = dataset.drop('CLIENTNUM', axis=1)
         eixoX = st.sidebar.selectbox("Selecione a coluna desejada:", dataset.select_dtypes(exclude='object').columns)
 
+        st.write("Esse gráfico de caixa (boxplot) interativo permite a seleção de uma coluna do dataset para analisar a distribuição dos dados e a localização de outliers.\n\n Essa ferramenta é importante na análise exploratória de dados, pois mostra a distribuição dos dados, incluindo os valores mínimo e máximo, os quartis, a mediana e possíveis outliers.")
         st.markdown(f"<h3 style='text-align: center;color: #d87093'>Gráfico interativo: Clientes perdidos por {eixoX}</h3> ", unsafe_allow_html=True)
         sns.set(style='whitegrid')
         plt.figure(figsize=(8,6))
@@ -201,6 +202,10 @@ if enable_graphics:
         plt.xlabel(f'{eixoX}', fontsize=14)
         plt.xticks(fontsize=12)
 
+        st.write("Ao analisarmos diferentes colunas com o gráfico de caixa, é possivel tirar algumas conclusões.")
+        st.write("Considerando a análise dos gráficos de caixa de colunas como a de idade dos clientes e do tempo de relacionamento com o banco, por exemplo, as quais apresentam poucos outliers, optou-se por não excluir os outliers de colunas que apresentassem essa tendência, afinal como o número de outliers era baixo, não implicariam em mudanças significativas na análise exploratória dos dados.")
+        st.write("Já se analisarmos os gráficos que apresentam bastante outliers, como a coluna de limite de crédito, também não foi feita a retirada dos outliers devido à impossibilidade de tratar essa grande quantidade de outliers sem influenciar no resultado da análise de dados.")
+        st.write("Outro exemplo de gráfico de caixa que pode ser encontrado é o gráfico criado com número de dependentes, onde não foram identificados outliers, não sendo necessário nenhum tratamento.")
         st.pyplot()
 
     else:
