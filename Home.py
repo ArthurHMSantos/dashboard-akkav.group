@@ -17,6 +17,7 @@ st.set_option('deprecation.showPyplotGlobalUse', False)
 
 # Dataset source
 dataset = pd.read_csv("./assets/BankChurners.csv")
+dataset = dataset.iloc[:, :-2]
 
 # Page title
 st.markdown("<h1 style='text-align: center;color: #c9c904'>Credit Card Customers</h1> ", unsafe_allow_html=True)
@@ -201,7 +202,7 @@ if enable_graphics:
         plt.xticks(fontsize=12)
 
         st.pyplot()
-        
+
     else:
         st.write('Erro. Recarregue a página e tente novamente.')
         
