@@ -161,7 +161,7 @@ if enable_graphics:
         st.write(dataset["Card_Category"].where(dataset["Gender"] == "F").value_counts())
 
     elif graph == 'Limite de crédito por coluna a ser selecionada':
-
+        dataset = dataset.drop(['CLIENTNUM','Total_Relationship_Count', 'Total_Revolving_Bal', 'Avg_Open_To_Buy', 'Total_Amt_Chng_Q4_Q1', 'Total_Trans_Amt', 'Total_Trans_Ct', 'Total_Ct_Chng_Q4_Q1', 'Avg_Utilization_Ratio'], axis=1)
         eixoX = st.sidebar.selectbox("Selecione a coluna desejada:", dataset.columns.delete(0))
         
         credit_limit = dataset["Credit_Limit"].groupby(dataset[f"{eixoX}"]).mean()
@@ -180,6 +180,7 @@ if enable_graphics:
         st.write("")
     
     elif graph == 'Clientes perdidos por coluna a ser selecionada':
+        dataset = dataset.drop(['CLIENTNUM','Total_Relationship_Count', 'Total_Revolving_Bal', 'Avg_Open_To_Buy', 'Total_Amt_Chng_Q4_Q1', 'Total_Trans_Amt', 'Total_Trans_Ct', 'Total_Ct_Chng_Q4_Q1', 'Avg_Utilization_Ratio'], axis=1)
 
         eixoX = st.sidebar.selectbox("Selecione a coluna desejada:", dataset.columns.delete([0, 1]))
 
