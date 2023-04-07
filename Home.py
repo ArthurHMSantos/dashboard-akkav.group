@@ -94,32 +94,44 @@ enable_graphics = st.sidebar.checkbox("Habilitar gráficos")
 
 if enable_graphics:
 
-    graph = st.sidebar.radio(" ", options=('Limite de crédito por categoria de renda', 'Faixa de limite de crédito por nível de escolaridade', 'Categoria de cartão de crédito por gênero' , 'Limite de crédito por coluna a ser selecionada', 'Clientes perdidos por coluna a ser selecionada', 'Gráfico de Caixa por coluna a ser selecioanda'))
+    graph = st.sidebar.radio(" ", options=('Limite de crédito por categoria de renda', 'Faixa de limite de crédito por nível de escolaridade', 'Categoria de cartão de crédito por gênero' , 'Limite de crédito por coluna a ser selecionada', 'Clientes perdidos por coluna a ser selecionada', 'Gráfico de Caixa por coluna a ser selecionada'))
 
     if graph == 'Limite de crédito por categoria de renda':
 
         credit_limit = dataset["Credit_Limit"].groupby(dataset["Income_Category"]).mean()
 
-        st.markdown("<h3 style='text-align: center;color: #d87093'>Limite de crédito por categoria de renda</h3> ", unsafe_allow_html=True)
-        feg = plt.figure(figsize=(15,7))
+        st.markdown("<h2 style='text-align: center;color: #d87093'>Limite de Crédito por Categoria de Renda</h2>", unsafe_allow_html=True)
+
+        fig, ax = plt.subplots(figsize=(10, 6))
         sns.barplot(data=dataset, x=credit_limit.index, y=credit_limit.values,
-        palette="Set2", dodge=False, order=['Less than $40K', '$40K - $60K', '$60K - $80K', '$80K - $120K', '$120K +'])
-        plt.ylabel("Limite de crédito médio")
-        plt.xlabel("Categoria de renda")
-        st.pyplot(feg)
-        
+                    palette="Set2", dodge=False, order=['Less than $40K', '$40K - $60K', '$60K - $80K', '$80K - $120K', '$120K +'])
+        ax.set_ylabel("Limite de crédito médio")
+        ax.set_xlabel("Categoria de renda")
+        ax.set_title("Limite de Crédito Médio por Categoria de Renda")
+        ax.grid(axis='y', linestyle='--')
+
+        st.write("Esse gráfico permite a visualização do limite de crédito médio por categoria de renda.")
+
+        st.pyplot(fig)
+
+        st.write("É possível observar que a categoria de renda com maior limite de crédito é a de $$120K +, e a categoria de renda com menor limite de crédito é a de Less than $40K. Isso reforça a ideia de que quanto maior a renda, maior o limite de crédito nesse banco.")
+
         st.write(credit_limit)
+
         
     elif graph == 'Faixa de limite de crédito por nível de escolaridade':
 
         st.markdown("<h3 style='text-align: center;color: #d87093'>Faixa de limite de crédito por nível de escolaridade</h3> ", unsafe_allow_html=True)
+        st.write("Esse gráfico permite a visualização do limite de crédito médio por nível de escolaridade.")
         figure, axw = survey(results, category_names)
         st.pyplot(figure)
+        st.write("Com esse gráfico, pode-se identificar se existe uma correlação entre essas variáveis e se a instituição financeira tem políticas específicas para determinados grupos. É possível observar se há diferenças significativas entre os valores e se elas seguem um padrão, como, por exemplo, se o limite de crédito aumenta à medida que o nível de escolaridade aumenta. Essa análise pode fornecer insights valiosos para a instituição financeira em termos de ajustes nas políticas de crédito e adequação do público-alvo.")
+        st.write("No entanto, é interessante observar que o nível de educação e o de renda não são variáveis independentes, pois, em geral, quanto maior o nível de educação, maior a renda. Portanto, é possível que a diferença entre os valores de limite de crédito seja explicada, em parte, pela diferença de renda entre os grupos.")
 
     elif graph == 'Categoria de cartão de crédito por gênero':
 
         st.markdown("<h3 style='text-align: center;color: #d87093'>Categoria de cartão de crédito por gênero</h3>", unsafe_allow_html=True)
-
+        st.write("Esses gráficos permitem a visualização da categoria de cartão de crédito por gênero.")
         male = dataset["Card_Category"].where(dataset["Gender"] == "M").value_counts().values
         female =  dataset["Card_Category"].where(dataset["Gender"] == "F").value_counts().values
         card_categorys = (dataset["Card_Category"].value_counts()).index
@@ -141,6 +153,8 @@ if enable_graphics:
         fig = plt.plot()
         st.pyplot(fig)
 
+        st.write("Com base na análise dos gráficos relacionados à categoria do cartão de crédito por gênero, podemos observar que a distribuição das categorias de cartão de crédito entre homens e mulheres está relativamente equilibrada, com proporções similares em todas as categorias. No entanto, é importante destacar que a categoria do cartão de crédito está diretamente relacionada ao limite de crédito e, por consequência, à renda do titular do cartão. Ao analisarmos o gráfico que compara o limite de crédito por categoria de renda, é possível notar que a maioria das mulheres no dataset não possui renda anual superior a 60 mil dólares, o que pode explicar a similaridade nas categorias de cartão de crédito entre homens e mulheres. Este fato ressalta a importância de considerar variáveis socioeconômicas ao analisar dados relacionados a cartões de crédito e seus titulares.")
+
         st.write("Clientes homens por categoria de cartão de crédito:")
         st.write(dataset["Card_Category"].where(dataset["Gender"] == "M").value_counts())
         st.write("Clientes mulheres por categoria de cartão de crédito:")
@@ -158,7 +172,12 @@ if enable_graphics:
         palette="Set2", dodge=False)
         plt.ylabel("Limite de crédito médio")
         plt.xlabel(f"{eixoX}")
+
+        st.write("Esse gráfico permite a visualização do limite de crédito médio por coluna selecionada.")
+
         st.pyplot(feg)
+
+        st.write("")
     
     elif graph == 'Clientes perdidos por coluna a ser selecionada':
 
@@ -187,7 +206,7 @@ if enable_graphics:
         plt.xlabel(f"{eixoX}")
         st.pyplot(feg)
 
-    elif graph == 'Gráfico de Caixa por coluna a ser selecioanda':
+    elif graph == 'Gráfico de Caixa por coluna a ser selecionada':
         dataset = dataset.drop('CLIENTNUM', axis=1)
         eixoX = st.sidebar.selectbox("Selecione a coluna desejada:", dataset.select_dtypes(exclude='object').columns)
 
