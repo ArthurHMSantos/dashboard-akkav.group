@@ -69,6 +69,7 @@ def predicting_churn(user_input):
     user_input_scaled = preprocess_user_input(user_input, scaler, le, le_gender, le_education, le_cat, le_card)
     state = predict_churn(user_input_scaled, rfc)
 
+<<<<<<< HEAD
     # Test the classifier with new data
     # print("ESPERADOS: 5 EXISTING")
     # user2 = [43, 'F', 4, 'High School', 'Unknown', 'Less than $40K', 'Blue', 2786, 39, 993, 0.644]
@@ -125,4 +126,6 @@ def predicting_churn(user_input):
     # state = predict_churn(user_input, rfc)
     # print("Predicted State: ", state)
 
+=======
+>>>>>>> 30fe57ce1fe3468a5a61821bf9a1ef9a37a3d942
     return state
