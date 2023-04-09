@@ -2,11 +2,11 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import streamlit as st
-from PIL import Image
 import numpy as np
-from filter import filter_dataset
 
-from services.survey import survey
+from PIL import Image
+from filter import filter_dataset
+from survey import survey
 
 # Streamlit page configs
 st.set_page_config(
